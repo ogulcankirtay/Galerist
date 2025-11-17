@@ -1,5 +1,6 @@
 package com.oglcnkrty.config;
 
+import com.oglcnkrty.exception.handler.AuthEntryPoint;
 import com.oglcnkrty.jwt.AuthenticationFilter;
 import jakarta.servlet.FilterChain;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,9 @@ public class SecurityConfig {
     @Autowired
     AuthenticationFilter authenticationFilter;
 
+    @Autowired
+    AuthEntryPoint authEntryPoint;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
@@ -35,6 +39,7 @@ public class SecurityConfig {
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated())
+                .exceptionHandling(exception -> exception.authenticationEntryPoint(authEntryPoint))
                 .sessionManagement(session
                         -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)

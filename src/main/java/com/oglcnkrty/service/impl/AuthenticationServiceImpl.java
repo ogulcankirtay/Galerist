@@ -8,6 +8,7 @@ import com.oglcnkrty.exception.ErrorMessage;
 import com.oglcnkrty.jwt.JWTService;
 import com.oglcnkrty.model.AuthRequest;
 import com.oglcnkrty.model.RefreshToken;
+import com.oglcnkrty.model.RefreshTokenRequest;
 import com.oglcnkrty.model.User;
 import com.oglcnkrty.repository.RefreshTokenRepository;
 import com.oglcnkrty.repository.UserRepository;
@@ -67,6 +68,22 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
         }
     }
 
+    @Override
+    public AuthResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
+        Optional<RefreshToken> otpToken = refreshTokenRepository.findByRefreshToken(refreshTokenRequest.getRefreshToken());
+        if (otpToken.isEmpty()) {
+            throw new BaseException(new ErrorMessage(ErrorType.REFRESH_TOKEN_NOT_FOUND, refreshTokenRequest.getRefreshToken()));
+        }
+        if (isRefreshTokenExpired(otpToken.get())) {
+            throw new BaseException(new ErrorMessage(ErrorType.REFRESH_TOKEN_IS_EXPIRED, refreshTokenRequest.getRefreshToken()));
+        }
+
+        String accessToken = jwtService.generateToken(otpToken.get().getUser());
+        RefreshToken refreshToken = refreshTokenRepository.save(createRefreshToken(otpToken.get().getUser()));
+
+        return new AuthResponse(accessToken, refreshToken.getRefreshToken());
+    }
+
     private User createUser(AuthRequest input) {
         User user = new User();
         user.setUsername(input.getUsername());
@@ -82,5 +99,9 @@ public class AuthenticationServiceImpl implements IAuthenticationService {
         refreshToken.setCreationDate(new Date());
         refreshToken.setExpiresAt(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 4));
         return refreshToken;
+    }
+
+    private boolean isRefreshTokenExpired(RefreshToken refreshToken) {
+        return refreshToken.getExpiresAt().before(new Date());
     }
 }
