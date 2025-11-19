@@ -4,7 +4,6 @@ import com.oglcnkrty.enums.ErrorType;
 import com.oglcnkrty.exception.BaseException;
 import com.oglcnkrty.exception.ErrorMessage;
 import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,7 +14,6 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -58,6 +56,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             throw new BaseException(new ErrorMessage(ErrorType.GENERAL_EXCEPTION, e.getMessage()));
         }
 
+        filterChain.doFilter(request, response);
 
     }
 }
