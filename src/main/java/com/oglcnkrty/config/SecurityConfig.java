@@ -40,7 +40,7 @@ public class SecurityConfig {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request ->
                         request.requestMatchers(REGISTER, REFRESH_TOKEN, AUTHENTICATION)
-                                .permitAll()
+                                .permitAll().requestMatchers(SWAGGER_PATHS).permitAll()
                                 .anyRequest()
                                 .authenticated())
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(authEntryPoint))
