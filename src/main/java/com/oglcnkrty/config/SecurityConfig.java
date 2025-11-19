@@ -2,7 +2,6 @@ package com.oglcnkrty.config;
 
 import com.oglcnkrty.exception.handler.AuthEntryPoint;
 import com.oglcnkrty.jwt.AuthenticationFilter;
-import jakarta.servlet.FilterChain;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,7 +10,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -22,6 +20,12 @@ public class SecurityConfig {
     private static final String REGISTER = "/register";
     private static final String REFRESH_TOKEN = "/refresh_token";
     private static final String AUTHENTICATION = "/authenticate";
+    public static final String[] SWAGGER_PATHS = {
+            "/swagger-ui/**",
+            "/swagger-ui.html",
+            "/v3/api-docs/**",
+    };
+
 
     @Autowired
     AuthenticationProvider authenticationProvider;

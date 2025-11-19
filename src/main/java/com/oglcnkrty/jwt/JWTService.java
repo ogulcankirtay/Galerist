@@ -35,6 +35,7 @@ public class JWTService {
     public String getUsernameFromToken(String token) {
         return getClaimsFromToken(token).getSubject();
     }
+
     public Boolean isTokenExpired(String token) {
         return getClaimsFromToken(token).getExpiration().after(new Date());
     }
@@ -42,7 +43,7 @@ public class JWTService {
 
     public Claims getClaimsFromToken(String token) {
         Claims claims = Jwts.parserBuilder()
-                .setSigningKey(token)
+                .setSigningKey(getSecretKey())
                 .build()
                 .parseClaimsJws(token).getBody();
         return claims;
