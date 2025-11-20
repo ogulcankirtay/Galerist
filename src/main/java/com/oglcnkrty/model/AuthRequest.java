@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthRequest extends BaseEntity {
+public class AuthRequest {
     @NotNull
     private String username;
     @NotNull
