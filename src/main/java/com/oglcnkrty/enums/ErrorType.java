@@ -1,7 +1,5 @@
 package com.oglcnkrty.enums;
 
-import lombok.Getter;
-
 
 public enum ErrorType {
 
@@ -11,7 +9,8 @@ public enum ErrorType {
     USERNAME_PASSWORD_INVALID("1007", "Kullanıcı adı veya şifre geçersiz."),
     REFRESH_TOKEN_NOT_FOUND("1008", "Refresh token bulunamadı."),
     REFRESH_TOKEN_IS_EXPIRED("1009", "Refresh tokenin süresi dolmuştur."),
-    GENERAL_EXCEPTION("9999", "Genel Bir Hata Oluştu.");
+    GENERAL_EXCEPTION("9999", "Genel Bir Hata Oluştu."),
+    CURRENCY_RATES_IS_OCCURRED("1010", "Currency servisinde bir hata oluştu.");
 
     private String code;
     private String message;
