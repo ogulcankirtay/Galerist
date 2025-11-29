@@ -1,8 +1,6 @@
 package com.oglcnkrty.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -28,6 +26,6 @@ public class Customer extends BaseEntity {
     @OneToOne
     private Address address;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Account> accounts = new ArrayList<>();
 }
